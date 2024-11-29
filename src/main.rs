@@ -22,6 +22,12 @@ fn main() {
     let hased = utilities::password::hash(&password);
     println!("Hased password: {hased}");
 
-    let is_valid = utilities::password::is_valid(&password, &hased);
-    println!("Status : {is_valid}");
+    // enter password hashed
+    let mut password_input = String::new();
+    println!("Enter password generate : ");
+    io::stdin().read_line(&mut password_input).expect("Wrong password");
+    // let password_input = password_input.trim();
+
+    let is_valid = utilities::password::is_valid(&password_input.trim(), &hased);
+    println!("Status Login : {is_valid}");
 }
