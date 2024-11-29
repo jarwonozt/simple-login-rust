@@ -1,15 +1,20 @@
 use std::{io, thread, time::Duration};
 
+use utilities::remaining;
+
 mod utilities {
     #[path = "random.rs"]
     pub mod random;
 
     #[path = "password.rs"]
     pub mod password;
+
+    #[path = "remaining.rs"]
+    pub mod remaining;
 }
 
 static MAX_LOGIN: u32 = 3; // limit login invalid
-static DELAY: u64 = 10; // seconds
+static DELAY: u32 = 10; // seconds
 
 fn main() {
     loop {
@@ -43,7 +48,6 @@ fn main() {
             io::stdin()
                 .read_line(&mut password_input)
                 .expect("Wrong password");
-            // let password_input = password_input.trim();
 
             let is_valid = utilities::password::is_valid(&password_input.trim(), &hased);
             println!();
@@ -62,12 +66,8 @@ fn main() {
             println!("Limit login, please try again later");
             println!();
             thread::sleep(Duration::from_secs(3));
-            for remaining in (0..=DELAY).rev() {
-                let minutes = remaining / 60;
-                let seconds = remaining % 60;
-                println!("Countdown: {:02}:{:02}", minutes, seconds); // Format MM:SS
-                thread::sleep(Duration::from_secs(1));
-            }
+            let rem = format!("{:?}",remaining::remainings(DELAY));
+            println!("{}", rem);
             continue;
         } else {
             break;
